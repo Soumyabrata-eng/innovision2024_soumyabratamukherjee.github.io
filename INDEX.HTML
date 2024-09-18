@@ -28,7 +28,142 @@
 <link href='//google.com' rel='preconnect dns=prefetch'>
 <link href='//cdn.statically.io' rel='preconnect dns=prefetch'>
 
-<body>
-</body>
 
+    <style>
+        /* Google Font */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: url('your-custom-background.jpg') no-repeat center center/cover;
+            color: white;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .container {
+            max-width: 800px;
+        }
+
+        h1 {
+            font-size: 4rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .typing {
+            font-size: 1.5rem;
+            font-weight: 300;
+            border-right: 2px solid white;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .achievements, .repos {
+            margin-top: 40px;
+        }
+
+        .achievements h2, .repos h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        ul li {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+
+        .repos ul {
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Soumyabrata Mukherjee</h1>
+        <p class="typing"></p>
+
+        <div class="achievements">
+            <h2>Achievements</h2>
+            <ul>
+                <li>Frontend Website Designer</li>
+                <li>Trained in Python and Java</li>
+                <li>Self-taught Developer</li>
+                <li>Telegram Pen Name: Dorovi</li>
+            </ul>
+        </div>
+
+        <div class="repos">
+            <h2>My GitHub Repositories</h2>
+            <ul id="repo-list"></ul>
+        </div>
+    </div>
+
+    <script>
+        // Typing effect for description
+        const textArray = [
+            'Hello, I am Soumyabrata Mukherjee, a frontend website designer and a student.',
+            'My pen name is Dorovi in Telegram, and everyone knows me rather better through it.',
+            'I am trained in Python and Java and currently working as a self-taught developer.',
+            'This is my portfolio dedicated to my works and my repositories.'
+        ];
+        let textIndex = 0;
+        let charIndex = 0;
+        const typingElement = document.querySelector('.typing');
+
+        function typeText() {
+            if (charIndex < textArray[textIndex].length) {
+                typingElement.textContent += textArray[textIndex].charAt(charIndex);
+                charIndex++;
+                setTimeout(typeText, 50); // Adjust speed here
+            } else {
+                setTimeout(() => {
+                    charIndex = 0;
+                    textIndex++;
+                    if (textIndex < textArray.length) {
+                        typingElement.textContent = '';
+                        setTimeout(typeText, 1000);
+                    }
+                }, 2000);
+            }
+        }
+
+        window.onload = () => {
+            typeText();
+        };
+
+        // Fetch GitHub Repositories
+        const username = 'Soumyabrata-eng';  // Replace with your GitHub username
+        const repoList = document.getElementById('repo-list');
+
+        fetch(`https://api.github.com/users/${username}/repos`)
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(repo => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<a href="${repo.html_url}" target="_blank">${repo.name}</a>`;
+                    repoList.appendChild(li);
+                });
+            })
+            .catch(error => {
+                repoList.innerHTML = '<li>Error fetching repositories</li>';
+            });
+    </script>
+</body>
 </html>
